@@ -339,4 +339,16 @@ function covid_tracker_admin_page(){
 require_once("vue/Covid_Tracker.php");
 }
 
+
+// CRON TASK
+include_once('assets/public/update.php');
+register_activation_hook(__FILE__, 'mon_activation');
+ 
+function mon_activation() {
+ if (! wp_next_scheduled ( 'mon_evenement' )) {
+ wp_schedule_event(strtotime('20:30:00'), 'daily', 'mon_evenement');
+ }
+}
+ 
+add_action('mon_evenement', 'updateDB');
 ?>
